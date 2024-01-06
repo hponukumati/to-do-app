@@ -1,17 +1,35 @@
-import React, { useContext } from 'react';
+import React, { useContext } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
-import { AuthContext } from '../AuthContext'; // Make sure this path is correct
-
-const navigation = [{ name: "Home", href: "/", current: true }];
+import { Link, useLocation,useNavigate } from "react-router-dom";
+import { AuthContext } from "../AuthContext"; // Ensure this path is correct
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function Navbar() {
-  const { auth, logout } = useContext(AuthContext); // Destructure logout from AuthContext
+  const { auth, logout } = useContext(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Define navigation items, include "My To Do" only if authenticated
+  const navigation = [
+    { name: "Home", href: "/", current: location.pathname === "/" },
+    ...(auth.token
+      ? [
+          {
+            name: "My To Do",
+            href: "/my-todos",
+            current: location.pathname === "/my-todos",
+          },
+        ]
+      : []),
+  ];
+  const handleLogout = () => {
+    logout();
+    navigate('/'); // Navigate to home page after logout
+  };
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -43,23 +61,16 @@ export default function Navbar() {
                         key={item.name}
                         to={item.href}
                         className={classNames(
-                          item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                          'px-3 py-2 rounded-md text-sm font-medium'
+                          item.current
+                            ? "bg-gray-900 text-white"
+                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                          "px-3 py-2 rounded-md text-sm font-medium"
                         )}
-                        aria-current={item.current ? 'page' : undefined}
+                        aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
                       </Link>
                     ))}
-                    {/* Show "My To Do" when user is authenticated */}
-                    {auth.token && (
-                      <Link
-                        to="/my-todos"
-                        className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                      >
-                        My To Do
-                      </Link>
-                    )}
                   </div>
                 </div>
               </div>
@@ -89,7 +100,10 @@ export default function Navbar() {
                           {({ active }) => (
                             <Link
                               to="/my-todos"
-                              className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700"
+                              )}
                             >
                               My Todos
                             </Link>
@@ -98,10 +112,11 @@ export default function Navbar() {
                         <Menu.Item>
                           {({ active }) => (
                             <button
-                              onClick={() => {
-                                logout(); // Call the logout method from your AuthContext
-                              }}
-                              className={classNames(active ? 'bg-gray-100' : '', 'block w-full text-left px-4 py-2 text-sm text-gray-700')}
+                              onClick={handleLogout}
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block w-full text-left px-4 py-2 text-sm text-gray-700"
+                              )}
                             >
                               Sign out
                             </button>
@@ -111,7 +126,10 @@ export default function Navbar() {
                     </Transition>
                   </Menu>
                 ) : (
-                  <Link to="/login" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                  <Link
+                    to="/login"
+                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >
                     Sign In
                   </Link>
                 )}
@@ -127,10 +145,12 @@ export default function Navbar() {
                   as={Link}
                   to={item.href}
                   className={classNames(
-                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'block px-3 py-2 rounded-md text-base font-medium'
+                    item.current
+                      ? "bg-gray-900 text-white"
+                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                    "block px-3 py-2 rounded-md text-base font-medium"
                   )}
-                  aria-current={item.current ? 'page' : undefined}
+                  aria-current={item.current ? "page" : undefined}
                 >
                   {item.name}
                 </Disclosure.Button>

@@ -17,7 +17,7 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('/auth/register', { // Updated API endpoint
+      const response = await fetch(import.meta.env.VITE_BACKEND_URL+'/auth/register', { // Updated API endpoint
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)

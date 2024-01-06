@@ -18,11 +18,11 @@ export default function Login() {
     e.preventDefault();
     // Send a request to the backend to authenticate the user
     try {
-      const response = await fetch('/auth/login', { // Update this path as necessary
+      const response = await fetch(import.meta.env.VITE_BACKEND_URL+'/auth/login', { // Update this path as necessary
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
-      });
+      });   
       const data = await response.json();
 
       if (response.ok) {

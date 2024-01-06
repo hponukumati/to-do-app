@@ -15,7 +15,7 @@ function App() {
           <Route path="/" element={<Home />}/>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Register />} />
-          <Route path="/todolist" element={<TodoList />} />
+          <Route path="/my-todos" element={<TodoList />} />
       </Routes>
       </AuthProvider>
     </>

@@ -1,18 +1,21 @@
 const ToDoModel= require('../models/TodoModel')
 
 module.exports.getToDo = async (req, res) => {
-    const userid = req.params.id; // Correctly access the 'id' parameter
-    console.log(userid);
-  
+    const userid = req.params.id;
+    const sortByRecent = req.query.sortByRecent; // Get query parameter
+
     try {
-      const toDo = await ToDoModel.find({userid:userid}); // Assuming 'userId' is the field in your ToDoModel
-      console.log(toDo);
+      let query = ToDoModel.find({ userid: userid });
+      if (sortByRecent === 'true') {
+        query = query.sort({ createdAt: -1 }); // Sort by createdAt in descending order
+      }
+      const toDo = await query;
       res.send(toDo);
     } catch (error) {
       console.error(error);
       res.status(500).send('Server Error');
     }
-  };
+};
  
   module.exports.saveToDo = async (req, res) => {
     const { text, userid } = req.body;
