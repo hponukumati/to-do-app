@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from '../AuthContext'; // Update this path
+import Navbar from './Navbar';
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -26,7 +27,7 @@ export default function Login() {
       const data = await response.json();
 
       if (response.ok) {
-        login(data.token, formData.username); // Update auth context with token and username
+        login(data.token, formData.username,data.userId); // Update auth context with token and username
         navigate('/'); // Redirect to home page
       } else {
         // Handle login errors (e.g., incorrect username/password)
@@ -39,13 +40,9 @@ export default function Login() {
 
   return (
       <>
+      <Navbar/>
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-          <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            <img
-              className="mx-auto h-10 w-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-              alt="Your Company"
-            />
+        <div className="sm:mx-auto sm:w-full sm:max-w-md">
             <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
               Sign in to your account
             </h2>

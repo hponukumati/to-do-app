@@ -1,25 +1,36 @@
-// AuthContext.js
-
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
 export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
+  // Initialize state with values from local storage
   const [auth, setAuth] = useState({
-    token: null,
-    username: null
+    token: localStorage.getItem('token') || null,
+    username: localStorage.getItem('username') || null,
+    userid: localStorage.getItem('userId') || null
   });
 
-  // Save token and username on login
-  const login = (token, username) => {
-    localStorage.setItem('token', token); // Store token in local storage
-    setAuth({ token, username });
+  // Update the state when local storage changes (e.g., on page refresh)
+  useEffect(() => {
+    setAuth({
+      token: localStorage.getItem('token'),
+      username: localStorage.getItem('username'),
+      userid: localStorage.getItem('userId')
+    });
+  }, []);
+
+  const login = (token, username, userid) => {
+    localStorage.setItem('token', token);
+    localStorage.setItem('username', username);
+    localStorage.setItem('userId', userid);
+    setAuth({ token, username, userid });
   };
 
-  // Clear token and username on logout
   const logout = () => {
-    localStorage.removeItem('token'); // Remove token from local storage
-    setAuth({ token: null, username: null });
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('userId');
+    setAuth({ token: null, username: null, userid: null });
   };
 
   return (
@@ -28,3 +39,5 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+export default AuthProvider;

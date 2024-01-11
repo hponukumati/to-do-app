@@ -1,10 +1,17 @@
-const {Router}= require('express');
-const { getToDo, saveToDo, updateToDo, deleteToDo } = require('../controllers/ToDoController');
+const express = require('express');
+const router = express.Router();
+const todoController = require('../controllers/ToDoController');
 
-const router=Router()
+// Fetch todos for a specific user
+router.get('/:id', todoController.getToDo);
 
-router.get('/:id',getToDo)
-router.post(`/save`, saveToDo)
-router.post(`/update`, updateToDo)
-router.post(`/del`, deleteToDo)
-module.exports=router;
+// Save a new todo for a user
+router.post('/', todoController.saveToDo);
+
+// Update a todo
+router.put('/', todoController.updateToDo);
+
+// Delete a todo
+router.delete('/', todoController.deleteToDo);
+
+module.exports = router;

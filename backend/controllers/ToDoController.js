@@ -1,49 +1,50 @@
-const ToDoModel= require('../models/TodoModel')
+const ToDoModel = require('../models/TodoModel');
 
 module.exports.getToDo = async (req, res) => {
     const userid = req.params.id;
-    const sortByRecent = req.query.sortByRecent; // Get query parameter
 
     try {
-      let query = ToDoModel.find({ userid: userid });
-      if (sortByRecent === 'true') {
-        query = query.sort({ createdAt: -1 }); // Sort by createdAt in descending order
-      }
-      const toDo = await query;
-      res.send(toDo);
+        const todos = await ToDoModel.find({ userid: userid });
+        res.send(todos);
     } catch (error) {
-      console.error(error);
-      res.status(500).send('Server Error');
+        console.error(error);
+        res.status(500).send('Server Error');
     }
 };
- 
-  module.exports.saveToDo = async (req, res) => {
+
+module.exports.saveToDo = async (req, res) => {
     const { text, userid } = req.body;
-  
-    ToDoModel.create({ text, userid })
-      .then((data) => {
-        console.log("Added.");
-        console.log(data);
-        res.send(data);
-      })
-      .catch((err) => console.log(err));
-  };
-  
 
-  module.exports.updateToDo = async (req, res) => {
+    try {
+        const newToDo = await ToDoModel.create({ text, userid });
+        console.log("Added:", newToDo);
+        res.send(newToDo);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+};
+
+module.exports.updateToDo = async (req, res) => {
     const { _id, text, userid } = req.body;
-  
-    ToDoModel.findByIdAndUpdate({ _id, userid }, { text })
-      .then(() => res.send("Updated."))
-      .catch((err) => console.log(err));
-  };
-  
 
-  module.exports.deleteToDo = async (req, res) => {
+    try {
+        await ToDoModel.findByIdAndUpdate({ _id, userid }, { text });
+        res.send("Updated.");
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+};
+
+module.exports.deleteToDo = async (req, res) => {
     const { _id, userid } = req.body;
-  
-    ToDoModel.findOneAndDelete({ _id, userid })
-      .then(() => res.send("Deleted."))
-      .catch((err) => console.log(err));
-  };
-  
+
+    try {
+        await ToDoModel.findOneAndDelete({ _id, userid });
+        res.send("Deleted.");
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+};

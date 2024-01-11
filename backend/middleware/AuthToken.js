@@ -1,6 +1,8 @@
 // authenticateToken.js
-
+const{Router}=require('express');
 const jwt = require('jsonwebtoken');
+
+const router=Router()
 
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
@@ -15,4 +17,11 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-module.exports = authenticateToken;
+router.post('/authenticatetoken',authenticateToken,(req,res)=>{
+    res.json({
+        message:'Validated Token',
+        user:req.user
+    });
+});
+
+module.exports = router;

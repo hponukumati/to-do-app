@@ -8,8 +8,8 @@ const registerRoutes = require('./routes/RegisterRoutes');
 
 const app = express();
 
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
 
 // Include your routes here
 app.use('/todos', toDoRoutes);
