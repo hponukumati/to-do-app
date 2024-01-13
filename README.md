@@ -27,7 +27,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Installation
 1. Clone the repository:
-git clone https://github.com/hponukumati/todo-app.git
+git clone https://github.com/hponukumati/to-do-app.git
 2. Install NPM packages for the backend:
 cd backend,
 npm install
@@ -55,5 +55,5 @@ Contributions are welcome! For major changes, please open an issue first to disc
 
 ## Contact
 Your Name - hponukumati@gmail.com
-Project Link: https://github.com/hponukumati/todo-app
+Project Link: https://github.com/hponukumati/to-do-app
 
