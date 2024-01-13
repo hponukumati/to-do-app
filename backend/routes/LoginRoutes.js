@@ -25,7 +25,7 @@ router.post('/login', async (req, res) => {
       }
   
       // Create and return a JSON Web Token (JWT)
-      const token = jwt.sign({ userId: user._id }, 'your-secret-key', { expiresIn: '1h' });
+      const token = jwt.sign({ userId: user._id }, 'secret', { expiresIn: '3 days' });
   
       res.json({ message: 'Login successful', token, userId:user._id });
     } catch (error) {

@@ -17,24 +17,37 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Send a request to the backend to authenticate the user
     try {
-      const response = await fetch(import.meta.env.VITE_BACKEND_URL+'/auth/login', { // Update this path as necessary
+      // Send a request to the login endpoint
+      const loginResponse = await fetch(import.meta.env.VITE_BACKEND_URL+'/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
-      });   
-      const data = await response.json();
-
-      if (response.ok) {
-        login(data.token, formData.username,data.userId); // Update auth context with token and username
-        navigate('/'); // Redirect to home page
-      } else {
-        // Handle login errors (e.g., incorrect username/password)
-        console.error('Login failed:', data.message);
-      }
+      });
+  
+      const loginData = await loginResponse.json();
+      console.log(loginData);
+      if (!loginResponse.ok) throw new Error(loginData.message || 'Login failed');
+  
+      // Validate the received token
+      const tokenValidationResponse = await fetch(import.meta.env.VITE_BACKEND_URL+'/auth/authenticatetoken', {
+        method: 'POST',
+        headers: {
+          'Authorization': `${loginData.token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      const validationData = await tokenValidationResponse.json();
+      if (!tokenValidationResponse.ok) throw new Error(validationData.message || 'Token validation failed');
+  
+      // Update auth context with token and user details
+      login(loginData.token, formData.username, loginData.userId);
+      console.log("auth Sucessful")
+      navigate('/'); // Redirect to home page
     } catch (error) {
-      console.error('Login request failed:', error);
+      console.error('Authentication error:', error.message);
+      // Handle login or token validation errors
     }
   };
 
@@ -72,11 +85,6 @@ export default function Login() {
                   <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                     Password
                   </label>
-                  <div className="text-sm">
-                    <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                      Forgot password?
-                    </a>
-                  </div>
                 </div>
                 <div className="mt-2">
                   <input
