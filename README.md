@@ -29,20 +29,20 @@ These instructions will get you a copy of the project up and running on your loc
 1. Clone the repository:
 git clone https://github.com/hponukumati/todo-app.git
 2. Install NPM packages for the backend:
-cd backend
+cd backend,
 npm install
 3. Install NPM packages for the frontend:
-cd frontend
+cd frontend,
 npm install
 
 ### Running the Application
 1. Start the backend server:
-cd backend
+cd backend,
 npm run dev
 2. In a new terminal, start the frontend application:
-cd frontend
+cd frontend,
 npm run dev
-3. Open `http://localhost:3000` to view the application in the browser.
+3. Open `http://localhost:5173` to view the application in the browser.
 
 ## Testing
 - Use Postman to test the API endpoints.
