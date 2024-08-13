@@ -54,6 +54,6 @@ Contributions are welcome! For major changes, please open an issue first to disc
 [MIT](https://choosealicense.com/licenses/mit/)
 
 ## Contact
-Your Name - hponukumati@gmail.com
+Sri Harsha Ponukumati - hponukumati@gmail.com
 Project Link: https://github.com/hponukumati/to-do-app
 
